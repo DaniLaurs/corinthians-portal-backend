@@ -13,13 +13,12 @@ export const signUp = async (req: Request, res: Response) => {
       });
     }
 
-    // verificar se usuário já existe
-    const [existingUser]: any = await db.query(
-      "SELECT id FROM users WHERE email = ?",
+    const result = await db.query(
+      "SELECT id FROM users WHERE email = $1",
       [email]
     );
 
-    if (existingUser.length > 0) {
+    if (result.rows.length > 0) {
       return res.status(409).json({
         message: "Usuário já cadastrado",
       });
@@ -28,7 +27,7 @@ export const signUp = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await db.query(
-      "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+      "INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4)",
       [name, email, hashedPassword, "user"]
     );
 
@@ -54,18 +53,18 @@ export const signIn = async (req: Request, res: Response) => {
       });
     }
 
-    const [rows]: any = await db.query(
-      "SELECT * FROM users WHERE email = ?",
+    const result = await db.query(
+      "SELECT * FROM users WHERE email = $1",
       [email]
     );
 
-    if (rows.length === 0) {
+    if (result.rows.length === 0) {
       return res.status(400).json({
         message: "Usuário não encontrado",
       });
     }
 
-    const user = rows[0];
+    const user = result.rows[0];
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 

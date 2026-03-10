@@ -12,7 +12,7 @@ export const createNews = async (req: Request, res: Response) => {
     }
 
     await db.query(
-      "INSERT INTO news (title, content, image_url) VALUES (?, ?, ?)",
+      "INSERT INTO news (title, content, image_url) VALUES ($1, $2, $3)",
       [title, content, image_url || null]
     );
 
@@ -35,23 +35,23 @@ export const getAllNews = async (req: Request, res: Response) => {
 
     const offset = (page - 1) * limit;
 
-    const [news]: any = await db.query(
-      "SELECT * FROM news ORDER BY created_at DESC LIMIT ? OFFSET ?",
+    const result = await db.query(
+      "SELECT * FROM news ORDER BY created_at DESC LIMIT $1 OFFSET $2",
       [limit, offset]
     );
 
-    const [totalResult]: any = await db.query(
+    const totalResult = await db.query(
       "SELECT COUNT(*) as total FROM news"
     );
 
-    const total = totalResult[0].total;
+    const total = totalResult.rows[0].total;
     const totalPages = Math.ceil(total / limit);
 
     return res.status(200).json({
       page,
       totalPages,
       totalItems: total,
-      data: news,
+      data: result.rows,
     });
 
   } catch (error) {
@@ -66,18 +66,18 @@ export const getNewsById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const [rows]: any = await db.query(
-      "SELECT * FROM news WHERE id = ?",
+    const result = await db.query(
+      "SELECT * FROM news WHERE id = $1",
       [id]
     );
 
-    if (rows.length === 0) {
+    if (result.rows.length === 0) {
       return res.status(404).json({
         message: "Notícia não encontrada",
       });
     }
 
-    return res.status(200).json(rows[0]);
+    return res.status(200).json(result.rows[0]);
 
   } catch (error) {
     console.log(error);
@@ -92,7 +92,7 @@ export const deleteNews = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     await db.query(
-      "DELETE FROM news WHERE id = ?",
+      "DELETE FROM news WHERE id = $1",
       [id]
     );
 

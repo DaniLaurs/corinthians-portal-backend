@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { db } from "./config/database";
+
 import authRoutes from "./routes/auth.routes";
 import commentRoutes from "./routes/comment.routes";
 import newsRoutes from "./routes/news.routes";
@@ -21,17 +22,17 @@ app.use("/api/auth", authRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/news", newsRoutes);
 
-// PORT dinâmica para deploy
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, async () => {
-  try {
-    const connection = await db.getConnection();
+// testar conexão com PostgreSQL
+db.connect()
+  .then(() => {
     console.log("✅ Banco conectado com sucesso");
-    connection.release();
-  } catch (error) {
+  })
+  .catch((error) => {
     console.log("❌ Erro ao conectar no banco", error);
-  }
+  });
 
+app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);
 });
