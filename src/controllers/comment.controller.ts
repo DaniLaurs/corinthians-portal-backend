@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { db } from "../config/database";
 
-
 export const createComment = async (req: Request, res: Response) => {
   try {
     const { content, news_id } = req.body;
@@ -13,20 +12,20 @@ export const createComment = async (req: Request, res: Response) => {
       });
     }
 
-    // 🔎 Verificar se a notícia existe
-    const [news]: any = await db.query(
-      "SELECT id FROM news WHERE id = ?",
+    // verificar se notícia existe
+    const newsResult = await db.query(
+      "SELECT id FROM news WHERE id = $1",
       [news_id]
     );
 
-    if (news.length === 0) {
+    if (newsResult.rows.length === 0) {
       return res.status(404).json({
         message: "Notícia não encontrada",
       });
     }
 
     await db.query(
-      "INSERT INTO comments (content, user_id, news_id) VALUES (?, ?, ?)",
+      "INSERT INTO comments (content, user_id, news_id) VALUES ($1, $2, $3)",
       [content, user.id, news_id]
     );
 
@@ -52,7 +51,7 @@ export const getComments = async (req: Request, res: Response) => {
       });
     }
 
-    const [comments] = await db.query(
+    const result = await db.query(
       `
       SELECT 
         comments.id,
@@ -61,13 +60,13 @@ export const getComments = async (req: Request, res: Response) => {
         users.name
       FROM comments
       JOIN users ON users.id = comments.user_id
-      WHERE comments.news_id = ?
+      WHERE comments.news_id = $1
       ORDER BY comments.created_at DESC
       `,
       [news_id]
     );
 
-    return res.status(200).json(comments);
+    return res.status(200).json(result.rows);
 
   } catch (error) {
     console.log(error);
