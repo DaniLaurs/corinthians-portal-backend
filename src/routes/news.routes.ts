@@ -6,6 +6,8 @@ import {
   getAllNews,
   getNewsById,
   deleteNews,
+  updateNews
+
 } from "../controllers/news.controller";
 
 const router = Router();
@@ -14,5 +16,6 @@ router.post("/", authMiddleware, adminMiddleware, createNews);
 router.get("/", getAllNews);
 router.get("/:id", getNewsById);
 router.delete("/:id", authMiddleware, adminMiddleware, deleteNews);
+router.put("/:id", authMiddleware, adminMiddleware, updateNews);
 
 export default router;

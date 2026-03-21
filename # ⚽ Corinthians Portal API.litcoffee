@@ -42,4 +42,63 @@ src
 └ server.ts
 
 
+## ▶️ Como rodar o projeto
+
+1️⃣ Clonar o repositório
+
+
+git clone URL_DO_REPOSITORIO
+
+
+2️⃣ Instalar dependências
+
+
+npm install
+
+
+3️⃣ Criar arquivo `.env`
+
+
+PORT=3000
+JWT_SECRET=seusecret
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=sua_senha
+DB_NAME=corinthians_portal
+
+
 4️⃣ Rodar o servidor
+
+
+npm run dev
+
+
+## 🌐 Rotas principais
+
+### Auth
+
+
+POST /api/auth/signup
+POST /api/auth/signin
+
+
+### Notícias
+
+
+GET /api/news
+GET /api/news/:id
+POST /api/news
+DELETE /api/news/:id
+PUT /api/news/:id
+
+
+### Comentários
+
+
+POST /api/comments
+GET /api/comments/news/:newsId
+
+
+## 👩‍💻 Desenvolvido por
+
+Danielle Cristina Lauriano Sousa

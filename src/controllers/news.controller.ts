@@ -106,4 +106,23 @@ export const deleteNews = async (req: Request, res: Response) => {
       message: "Erro ao deletar notícia",
     });
   }
+
+ 
+};
+ 
+export const updateNews = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { title, content, image_url } = req.body;
+
+    await db.query(
+      "UPDATE news SET title=$1, content=$2, image_url=$3 WHERE id=$4",
+      [title, content, image_url, id]
+    );
+
+    res.json({ message: "Notícia atualizada com sucesso" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Erro ao atualizar notícia" });
+  }
 };

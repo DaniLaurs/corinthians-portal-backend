@@ -8,6 +8,7 @@ import commentRoutes from "./routes/comment.routes";
 import newsRoutes from "./routes/news.routes";
 
 dotenv.config();
+console.log("DATABASE_URL:", process.env.DATABASE_URL);
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/news", newsRoutes);
 
 const PORT = process.env.PORT || 3000;
+console.log("JWT_SECRET:", process.env.JWT_SECRET);
 
 // testar conexão com PostgreSQL
 db.connect()

@@ -3,6 +3,8 @@ import bcrypt from "bcryptjs";
 import { db } from "../config/database";
 import jwt from "jsonwebtoken";
 
+const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
+
 export const signUp = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
@@ -76,7 +78,7 @@ export const signIn = async (req: Request, res: Response) => {
 
     const token = jwt.sign(
       { id: user.id, role: user.role },
-      process.env.JWT_SECRET as string,
+      JWT_SECRET,
       { expiresIn: "1d" }
     );
 
