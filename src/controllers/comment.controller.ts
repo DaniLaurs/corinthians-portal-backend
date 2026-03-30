@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { db } from "../config/database";
 
+
 export const createComment = async (req: Request, res: Response) => {
   try {
     const { content, news_id } = req.body;
@@ -72,6 +73,49 @@ export const getComments = async (req: Request, res: Response) => {
     console.log(error);
     return res.status(500).json({
       message: "Erro ao buscar comentários",
+    });
+  }
+};
+
+
+export const getCommentsByNews = async (req: Request, res: Response) => {
+  try {
+    const { newsId } = req.params;
+
+    const result = await db.query(
+      "SELECT * FROM comments WHERE news_id = $1 ORDER BY id DESC",
+      [newsId]
+    );
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erro ao buscar comentários" });
+  }
+};
+
+
+export const getNewsById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const result = await db.query(
+      "SELECT * FROM news WHERE id = $1",
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "Notícia não encontrada",
+      });
+    }
+
+    return res.status(200).json(result.rows[0]);
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Erro ao buscar notícia",
     });
   }
 };

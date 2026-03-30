@@ -6,6 +6,8 @@ import { db } from "./config/database";
 import authRoutes from "./routes/auth.routes";
 import commentRoutes from "./routes/comment.routes";
 import newsRoutes from "./routes/news.routes";
+import standingsRoutes from "./routes/standings.routes";
+import likeRoutes from "./routes/like.routes";
 
 dotenv.config();
 console.log("DATABASE_URL:", process.env.DATABASE_URL);
@@ -22,6 +24,9 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/news", newsRoutes);
+app.use("/api/comments", commentRoutes);
+app.use("/api/standings", standingsRoutes);
+app.use("/api/like", likeRoutes);
 
 const PORT = process.env.PORT || 3000;
 console.log("JWT_SECRET:", process.env.JWT_SECRET);

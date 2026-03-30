@@ -76,8 +76,13 @@ export const signIn = async (req: Request, res: Response) => {
       });
     }
 
+    // 🔥 TOKEN COM NOME
     const token = jwt.sign(
-      { id: user.id, role: user.role },
+      {
+        id: user.id,
+        name: user.name, // 👈 AGORA VAI FUNCIONAR NO FRONT
+        role: user.role,
+      },
       JWT_SECRET,
       { expiresIn: "1d" }
     );

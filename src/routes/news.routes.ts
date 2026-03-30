@@ -13,8 +13,8 @@ import {
 const router = Router();
 
 router.post("/", authMiddleware, adminMiddleware, createNews);
-router.get("/", getAllNews);
 router.get("/:id", getNewsById);
+router.get("/", getAllNews);
 router.delete("/:id", authMiddleware, adminMiddleware, deleteNews);
 router.put("/:id", authMiddleware, adminMiddleware, updateNews);
 
