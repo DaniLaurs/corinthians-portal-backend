@@ -12,7 +12,7 @@ router.post("/", authMiddleware, toggleLike);
 router.get("/:newsId", getLikes);
 
 // 👤 saber se usuário já curtiu
-router.get("/user/:newsId", authMiddleware, userLiked);
+router.get("/check/:newsId", authMiddleware, userLiked);
 
 router.get("/user/:id", authMiddleware, async (req, res) => {
   const user_id = req.params.id;

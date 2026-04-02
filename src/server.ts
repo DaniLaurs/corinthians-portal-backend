@@ -14,8 +14,12 @@ console.log("DATABASE_URL:", process.env.DATABASE_URL);
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("API Corinthians Portal funcionando ⚽");
