@@ -81,6 +81,7 @@ export const signIn = async (req: Request, res: Response) => {
       {
         id: user.id,
         name: user.name, // 👈 AGORA VAI FUNCIONAR NO FRONT
+        email: user.email,
         role: user.role,
       },
       JWT_SECRET,

@@ -11,7 +11,7 @@ export const authMiddleware = (
   try {
     const authHeader = req.headers.authorization;
 
-    console.log("HEADER:", authHeader); // 👈 já tinha
+console.log("AUTH HEADER:", req.headers.authorization);
 
     if (!authHeader) {
       return res.status(401).json({

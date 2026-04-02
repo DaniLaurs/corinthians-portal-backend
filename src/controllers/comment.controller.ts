@@ -60,14 +60,15 @@ export const getComments = async (req: Request, res: Response) => {
         comments.created_at,
         users.name
       FROM comments
-      JOIN users ON users.id = comments.user_id
+      LEFT JOIN users ON users.id = comments.user_id
       WHERE comments.news_id = $1
       ORDER BY comments.created_at DESC
       `,
       [news_id]
     );
-
+    console.log("📦 RESULTADO:", result.rows);
     return res.status(200).json(result.rows);
+    
 
   } catch (error) {
     console.log(error);
@@ -79,18 +80,32 @@ export const getComments = async (req: Request, res: Response) => {
 
 
 export const getCommentsByNews = async (req: Request, res: Response) => {
-  try {
-    const { newsId } = req.params;
+  console.log("🔥 ENTROU NO CONTROLLER");
 
+  const { news_id } = req.params;
+
+  try {
     const result = await db.query(
-      "SELECT * FROM comments WHERE news_id = $1 ORDER BY id DESC",
-      [newsId]
+      `
+      SELECT 
+        comments.id,
+        comments.content,
+        comments.created_at,
+        users.name
+      FROM comments
+      LEFT JOIN users ON users.id = comments.user_id
+      WHERE comments.news_id = $1
+      ORDER BY comments.created_at DESC
+      `,
+      [news_id]
     );
 
-    res.json(result.rows);
+    console.log("📦 RESULTADO:", result.rows);
+
+    return res.status(200).json(result.rows);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Erro ao buscar comentários" });
+    console.error("ERRO:", error);
+    return res.status(500).json({ error: "Erro ao buscar comentários" });
   }
 };
 
