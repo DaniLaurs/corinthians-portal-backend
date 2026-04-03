@@ -28,7 +28,6 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/news", newsRoutes);
-app.use("/api/comments", commentRoutes);
 app.use("/api/standings", standingsRoutes);
 app.use("/api/likes", likesRoutes);
 
