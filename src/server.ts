@@ -8,6 +8,8 @@ import commentRoutes from "./routes/comment.routes";
 import newsRoutes from "./routes/news.routes";
 import standingsRoutes from "./routes/standings.routes";
 import likesRoutes from "./routes/likes.routes";
+import teamsRoutes from "./routes/teams.routes";
+import matchesRoutes from "./routes/matches.routes";
 
 dotenv.config();
 console.log("DATABASE_URL:", process.env.DATABASE_URL);
@@ -30,6 +32,8 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/standings", standingsRoutes);
 app.use("/api/likes", likesRoutes);
+app.use("/api/matches", matchesRoutes);
+app.use("/api/teams", teamsRoutes);
 
 const PORT = process.env.PORT || 3000;
 console.log("JWT_SECRET:", process.env.JWT_SECRET);
