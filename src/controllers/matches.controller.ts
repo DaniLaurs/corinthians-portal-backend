@@ -28,25 +28,48 @@ export const getMatches = async (req: Request, res: Response) => {
 export const createMatch = async (req: Request, res: Response) => {
   const { home_team, away_team, date, time, competition } = req.body;
 
+  console.log("📥 BODY RECEBIDO:", req.body);
+
   try {
     // ✅ GARANTE FORMATO CORRETO
     const formattedTime = time?.slice(0, 5); // HH:mm
 
+    // 🔥 cria match_date completo
+    const match_date = `${date}T${formattedTime}:00`;
+
     const result = await db.query(
-      `INSERT INTO matches (home_team, away_team, date, time, competition)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING 
-         id,
-         home_team,
-         away_team,
-         competition,
-         date,
-         time,
-         CONCAT(date, 'T', time) AS match_date`,
-      [home_team, away_team, date, formattedTime, competition]
+      `INSERT INTO matches 
+      (
+        home_team,
+        away_team,
+        competition,
+        date,
+        time,
+        match_date
+      )
+
+      VALUES ($1, $2, $3, $4, $5, $6)
+
+      RETURNING 
+        id,
+        home_team,
+        away_team,
+        competition,
+        date,
+        time,
+        match_date`,
+      [
+        home_team,
+        away_team,
+        competition,
+        date,
+        formattedTime,
+        match_date,
+      ]
     );
 
     res.status(201).json(result.rows[0]);
+
   } catch (err) {
     console.log("ERRO CREATE MATCH:", err);
     res.status(500).json({ error: "Erro ao criar jogo" });

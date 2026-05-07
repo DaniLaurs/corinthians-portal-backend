@@ -1,6 +1,8 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import { db } from "./config/database";
 
 import authRoutes from "./routes/auth.routes";
@@ -11,8 +13,7 @@ import likesRoutes from "./routes/likes.routes";
 import teamsRoutes from "./routes/teams.routes";
 import matchesRoutes from "./routes/matches.routes";
 
-dotenv.config();
-console.log("DATABASE_URL:", process.env.DATABASE_URL);
+
 
 const app = express();
 

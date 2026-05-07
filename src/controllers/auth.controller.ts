@@ -3,7 +3,11 @@ import bcrypt from "bcryptjs";
 import { db } from "../config/database";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
+const JWT_SECRET = process.env.JWT_SECRET as string;
+
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET não definido!");
+}
 
 export const signUp = async (req: Request, res: Response) => {
   try {
@@ -48,6 +52,9 @@ export const signUp = async (req: Request, res: Response) => {
 export const signIn = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
+
+  console.log("🔥 LOGIN BATENDO AQUI");
+  console.log("JWT NO LOGIN:", JWT_SECRET);
 
     if (!email || !password) {
       return res.status(400).json({
