@@ -1,18 +1,15 @@
 import { Request, Response } from "express";
 import { db } from "../config/database";
 
-export const getStandings = async (
-  req: Request,
-  res: Response
-) => {
+export const getStandings = async (req: Request, res: Response) => {
   try {
+
     const result = await db.query(`
-      SELECT *
-      FROM standings
+      SELECT * FROM standings
       ORDER BY
         points DESC,
-        goals_diff DESC,
-        win DESC
+        win DESC,
+        goals_diff DESC
     `);
 
     res.json(result.rows);
