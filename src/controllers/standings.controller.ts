@@ -7,8 +7,9 @@ export const getStandings = async (req: Request, res: Response) => {
     const result = await db.query(`
       SELECT * FROM standings
       ORDER BY
-        points DESC,
+       points DESC,
         win DESC,
+        lose ASC,
         goals_diff DESC
     `);
 
